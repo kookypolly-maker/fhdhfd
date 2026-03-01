@@ -1,0 +1,370 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    /* Запасной градиент, если фото не загрузится */
+    background: radial-gradient(circle at 20% 30%, #a8d8ff, #4f8bc9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Гоголь на фоне */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('images (1).webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.15;  /* Очень прозрачный, чтобы не мешал игре */
+    pointer-events: none;  /* Гоголь не мешает кликать */
+    z-index: 0;
+}
+
+/* Добавляем легкую вуаль поверх Гоголя для читаемости */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);  /* Легкое осветление */
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Фоновые пузырьки (поверх Гоголя, но под интерфейсом) */
+.background-bubbles {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.bubble {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    backdrop-filter: blur(5px);
+    animation: float 15s infinite;
+}
+
+.bubble:nth-child(1) {
+    width: 200px;
+    height: 200px;
+    top: 10%;
+    left: 5%;
+    animation-delay: 0s;
+}
+
+.bubble:nth-child(2) {
+    width: 300px;
+    height: 300px;
+    bottom: -50px;
+    right: 10%;
+    animation-delay: -5s;
+}
+
+.bubble:nth-child(3) {
+    width: 150px;
+    height: 150px;
+    top: 40%;
+    right: 20%;
+    animation-delay: -2s;
+}
+
+.bubble:nth-child(4) {
+    width: 250px;
+    height: 250px;
+    bottom: 20%;
+    left: 15%;
+    animation-delay: -8s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-30px) rotate(5deg); }
+}
+
+/* Главный контейнер (поверх всего) */
+.glass-container {
+    position: relative;
+    z-index: 10;
+    max-width: 900px;
+    width: 100%;
+}
+
+/* LIQUID GLASS PANEL */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(20px) saturate(200%);
+    -webkit-backdrop-filter: blur(20px) saturate(200%);
+    border-radius: 60px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 
+        0 25px 50px -12px rgba(0, 0, 0, 0.3),
+        inset 0 1px 2px rgba(255, 255, 255, 0.8),
+        inset 0 -1px 1px rgba(255, 255, 255, 0.4);
+    padding: 20px 35px;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Эффект хрома */
+.glass-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        rgba(255, 255, 255, 0.5),
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    transform: skewX(-20deg);
+    animation: shine 8s infinite;
+}
+
+@keyframes shine {
+    0% { left: -100%; }
+    20% { left: 100%; }
+    100% { left: 100%; }
+}
+
+/* Панель счёта */
+.score-panel {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.score-item {
+    position: relative;
+    padding: 10px 20px;
+    border-radius: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    min-width: 120px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.score-label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.7);
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.score-value {
+    display: block;
+    font-size: 3rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #ffffff, #e0f0ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    text-shadow: 0 5px 15px rgba(0, 50, 100, 0.3);
+}
+
+.score-divider {
+    width: 2px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 1px;
+}
+
+.glass-shine {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.4), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.score-item:hover .glass-shine {
+    opacity: 1;
+}
+
+/* Кнопка */
+.glass-button {
+    position: relative;
+    background: rgba(255, 255, 255, 0.25);
+    border: 1.5px solid rgba(255, 255, 255, 0.8);
+    border-radius: 50px;
+    padding: 12px 30px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: white;
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    box-shadow: 
+        0 15px 30px -10px rgba(0, 50, 80, 0.4),
+        inset 0 1px 3px rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.button-text {
+    position: relative;
+    z-index: 2;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.button-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.glass-button:hover {
+    background: rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 20px 40px -10px rgba(0, 70, 110, 0.5);
+}
+
+.glass-button:hover .button-glow {
+    opacity: 0.5;
+}
+
+.glass-button:active {
+    transform: translateY(2px);
+    box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 0.3);
+}
+
+/* Игровой контейнер */
+.game-wrapper {
+    position: relative;
+    border-radius: 60px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.4);
+}
+
+#gameCanvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 50px;
+    background: radial-gradient(circle at 30% 40%, rgba(179, 226, 255, 0.8), rgba(74, 143, 193, 0.8));
+    box-shadow: 
+        inset 0 -5px 15px rgba(0, 30, 50, 0.3),
+        inset 0 5px 15px rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: transform 0.2s;
+    /* Легкая прозрачность, чтобы Гоголь слегка просвечивал */
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(2px);
+}
+
+#gameCanvas:hover {
+    transform: scale(1.01);
+}
+
+/* Инструкция */
+.glass-instruction {
+    margin-top: 20px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
+    border-radius: 50px;
+    padding: 15px 30px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    position: relative;
+    overflow: hidden;
+}
+
+.instruction-arrow {
+    font-size: 1.8rem;
+    filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.2));
+    animation: pulse 2s infinite;
+}
+
+.instruction-arrow:nth-child(2) { animation-delay: 0.5s; }
+.instruction-arrow:nth-child(3) { animation-delay: 1s; }
+.instruction-arrow:nth-child(4) { animation-delay: 1.5s; }
+
+@keyframes pulse {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+.instruction-text {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: white;
+    text-shadow: 0 2px 10px rgba(0, 50, 80, 0.5);
+    margin-left: 10px;
+}
+
+.instruction-glow {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.3), transparent 70%);
+    animation: rotate 10s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Адаптивность */
+@media (max-width: 700px) {
+    .score-panel {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .score-divider {
+        width: 80%;
+        height: 2px;
+    }
+    
+    .glass-instruction {
+        flex-wrap: wrap;
+    }
+}
